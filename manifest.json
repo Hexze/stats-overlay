@@ -1,0 +1,25 @@
+{
+  "name": "stats-overlay",
+  "display_name": "Stats Overlay",
+  "version": "1.0.0",
+  "description": "Reworked tablist that shows players' stats ingame",
+  "homepage": null,
+  "dependencies": [
+    {
+      "name": "hypixel-mod-api",
+      "version": null,
+      "optional": false
+    },
+    {
+      "name": "urchin",
+      "version": null,
+      "optional": false
+    },
+    {
+      "name": "denicker",
+      "version": null,
+      "optional": true
+    }
+  ],
+  "min_starfish_version": null
+}
