@@ -568,8 +568,14 @@ local function show(gameColumns, teamPrefixRule, gameTracker)
     refreshTimer = starfish.timers.interval(REFRESH_MS, refresh)
 end
 
+local function setColumns(gameColumns)
+    columns = gameColumns
+    dirty = true
+end
+
 return {
     show = show,
+    setColumns = setColumns,
     hide = hide,
     track = track,
     tracks = tracks,
