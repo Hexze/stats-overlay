@@ -1,7 +1,7 @@
 plugin = {
     name = "stats-overlay",
     displayName = "Stats Overlay",
-    version = "1.0.0",
+    version = "1.0.1",
     description = "Reworked tablist that shows players' stats ingame",
     dependencies = {
         { name = "hypixel-mod-api" },
@@ -27,6 +27,36 @@ starfish.schema.section({
         { key = "keepDisconnected.enabled", type = "toggle", default = true, label = "Keep Disconnected", description = "Keep disconnected players in tab, marked [x], until they reconnect." },
     },
 })
+
+local function slotKey(index, field)
+    return "tab.slot" .. index .. "." .. field
+end
+
+for index, slot in ipairs(game.defaultSlots) do
+    starfish.schema.section({
+        key = "tab.slot" .. index,
+        label = "Column " .. index,
+        description = "Configure tab column " .. index .. ".",
+        settings = {
+            { key = slotKey(index, "enabled"), type = "toggle", default = slot.shown, label = "Enabled", description = "Show column " .. index .. "." },
+            { key = slotKey(index, "content"), type = "cycle", default = slot.content, values = game.slotContents, label = "Content", description = "What column " .. index .. " shows." },
+        },
+    })
+end
+
+local function visibleColumns()
+    local visible, hasName = {}, false
+    for index in ipairs(game.defaultSlots) do
+        if starfish.config.get(slotKey(index, "enabled")) then
+            local column = game.columns[starfish.config.get(slotKey(index, "content"))]
+            if column and not (column.isName and hasName) then
+                hasName = hasName or column.isName == true
+                visible[#visible + 1] = column
+            end
+        end
+    end
+    return visible
+end
 
 -- Game session
 
@@ -56,7 +86,7 @@ end
 local function activateOnceLive()
     if session.live or not isGameReady() then return end
     session.live = true
-    tab.show(game.columns, session.rules.acceptsTeamPrefix, session.tracker)
+    tab.show(visibleColumns(), session.rules.acceptsTeamPrefix, session.tracker)
     if session.replay then tabOrder.activate() end
     for _, player in ipairs(starfish.players.all()) do
         follow(player)
@@ -127,6 +157,7 @@ starfish.events.on("team:update", function()
 end)
 
 starfish.events.on("config:changed", function()
+    tab.setColumns(visibleColumns())
     tab.markDirty()
 end)
 
