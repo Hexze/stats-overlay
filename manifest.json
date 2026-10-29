@@ -1,8 +1,9 @@
 {
   "name": "stats-overlay",
   "display_name": "Stats Overlay",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Reworked tablist that shows players' stats ingame",
+  "prefix": "",
   "homepage": null,
   "dependencies": [
     {
