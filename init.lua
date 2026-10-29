@@ -1,7 +1,8 @@
 plugin = {
     name = "stats-overlay",
     displayName = "Stats Overlay",
-    version = "1.0.1",
+    version = "1.0.2",
+    minStarfishVersion = "0.1.0-beta.16",
     description = "Reworked tablist that shows players' stats ingame",
     dependencies = {
         { name = "hypixel-mod-api" },
