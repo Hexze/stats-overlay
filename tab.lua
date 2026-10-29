@@ -7,24 +7,12 @@ local SUFFIX_PRIORITY = 100
 local SEPARATOR = "§r §8| §r"
 local DIMMED_NAME_COLOR = "§7"
 local HEADER_LABEL_COLOR = "§7"
-local FORMAT_SIGN = "§"
-local BOLD_CODE = "l"
-local STYLE_CODE = "^[k-o]$"
 local SPACE = "§r "
 local BOLD_SPACES = "§l%s§r"
 local SPACE_WIDTH = 4
 local BOLD_EXTRA_WIDTH = 1
 local BOLD_SPACE_WIDTH = SPACE_WIDTH + BOLD_EXTRA_WIDTH
 local ALWAYS_PADDABLE_WIDTH = 12
-local DEFAULT_CHAR_WIDTH = 6
-local CHAR_WIDTH = {
-    [" "] = SPACE_WIDTH,
-    ["!"] = 2, ["\""] = 4, ["'"] = 2, ["("] = 5, [")"] = 5, ["*"] = 4,
-    [","] = 2, ["."] = 2, [":"] = 2, [";"] = 2, ["<"] = 5, [">"] = 5,
-    ["@"] = 7, ["["] = 4, ["]"] = 4, ["`"] = 3, ["{"] = 5, ["|"] = 2, ["}"] = 5,
-    ["I"] = 4, ["f"] = 5, ["i"] = 2, ["k"] = 5, ["l"] = 3, ["t"] = 4,
-    ["✫"] = 8.5, ["✪"] = 8.5, ["⚝"] = 8.5, ["✥"] = 9, ["✭"] = 8.5, ["✓"] = 7.5,
-}
 local TAB_HEAD_WIDTH = 9
 local TAB_ENTRY_SPARE_WIDTH = 13
 local TAB_HEARTS_WIDTH = 90
@@ -43,25 +31,7 @@ local UNTRACKED = {
 
 -- Text measurement
 
-local function staysBold(code, bold)
-    if code == BOLD_CODE then return true end
-    return bold and code:find(STYLE_CODE) ~= nil
-end
-
-local function textWidth(text)
-    local width, bold, isCode = 0, false, false
-    for _, codepoint in utf8.codes(text) do
-        local char = utf8.char(codepoint)
-        if isCode then
-            bold, isCode = staysBold(char:lower(), bold), false
-        elseif char == FORMAT_SIGN then
-            isCode = true
-        else
-            width = width + (CHAR_WIDTH[char] or DEFAULT_CHAR_WIDTH) + (bold and BOLD_EXTRA_WIDTH or 0)
-        end
-    end
-    return width
-end
+local textWidth = starfish.display.textWidth
 
 local function teamColorOf(teamPrefix)
     local last = nil
