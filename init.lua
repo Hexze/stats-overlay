@@ -1,7 +1,7 @@
 plugin = {
     name = "stats-overlay",
     displayName = "Stats Overlay",
-    version = "1.0.2",
+    version = "1.0.3",
     minStarfishVersion = "0.1.0-beta.16",
     description = "Reworked tablist that shows players' stats ingame",
     dependencies = {
@@ -24,8 +24,10 @@ starfish.schema.section({
     label = "Game State",
     description = "Follow deaths, disconnects and eliminations in the tab list.",
     settings = {
-        { key = "respawnTimer.enabled", type = "toggle", default = true, label = "Respawn Timer", description = "Show a countdown while a player respawns." },
-        { key = "keepDisconnected.enabled", type = "toggle", default = true, label = "Keep Disconnected", description = "Keep disconnected players in tab, marked [x], until they reconnect." },
+        { key = "gameState.enabled", type = "toggle", default = true, label = "Enabled", description = "Show game state in the tab list." },
+        { key = "bedIndicator.enabled", type = "toggle", default = true, label = "Bed", description = "Mark players whose bed is still standing with [✓]." },
+        { key = "respawnTimer.enabled", type = "toggle", default = true, label = "Respawn", description = "Show a countdown while a player respawns." },
+        { key = "keepDisconnected.enabled", type = "toggle", default = true, label = "Disconnect", description = "Keep disconnected players in tab, marked [x], until they reconnect." },
     },
 })
 
