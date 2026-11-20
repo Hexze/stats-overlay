@@ -1,7 +1,7 @@
 {
   "name": "stats-overlay",
   "display_name": "Stats Overlay",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Reworked tablist that shows players' stats ingame",
   "prefix": "",
   "homepage": null,
@@ -22,5 +22,5 @@
       "optional": true
     }
   ],
-  "min_starfish_version": null
+  "min_starfish_version": "0.1.0-beta.16"
 }
