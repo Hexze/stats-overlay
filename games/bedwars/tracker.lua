@@ -138,8 +138,12 @@ end
 
 -- Row status
 
+local function shows(indicator)
+    return starfish.config.get("gameState.enabled") and starfish.config.get(indicator .. ".enabled")
+end
+
 local function respawnSecondsOf(game, uuid)
-    if kindOf(game, uuid) ~= "respawning" or not starfish.config.get("respawnTimer.enabled") then return nil end
+    if kindOf(game, uuid) ~= "respawning" or not shows("respawnTimer") then return nil end
     return game.states[uuid].remaining
 end
 
@@ -163,14 +167,18 @@ local function badgeOf(game, uuid)
     local seconds = respawnSecondsOf(game, uuid)
     if seconds then return COUNTDOWN_BADGE:format(seconds) end
 
-    if standingBeds()[game.roster.teamColorOf(uuid)] then return BED_BADGE end
+    if shows("bedIndicator") and standingBeds()[game.roster.teamColorOf(uuid)] then return BED_BADGE end
     return nil
 end
 
 local function allBadges()
-    local badges = { BED_BADGE, DISCONNECTED_BADGE }
-    for seconds = 1, RECONNECT_RESPAWN_SECONDS do
-        table.insert(badges, COUNTDOWN_BADGE:format(seconds))
+    local badges = {}
+    if shows("bedIndicator") then table.insert(badges, BED_BADGE) end
+    if shows("keepDisconnected") then table.insert(badges, DISCONNECTED_BADGE) end
+    if shows("respawnTimer") then
+        for seconds = 1, RECONNECT_RESPAWN_SECONDS do
+            table.insert(badges, COUNTDOWN_BADGE:format(seconds))
+        end
     end
     return badges
 end
@@ -178,7 +186,7 @@ end
 local function isKept(game, uuid)
     local kind = kindOf(game, uuid)
     if kind == "eliminated" then return false end
-    if kind == "disconnected" then return starfish.config.get("keepDisconnected.enabled") end
+    if kind == "disconnected" then return shows("keepDisconnected") end
     return true
 end
 
